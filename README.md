@@ -1,7 +1,7 @@
 akka cluster - music assistant app
 
 ```
-AssistanceFrontendActor | AssistantBackendActorApp
+AssistanceMasterActor | AssistanceSlaveActor
 ```
 
 references

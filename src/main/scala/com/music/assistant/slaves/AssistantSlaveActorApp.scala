@@ -5,7 +5,7 @@ import com.typesafe.config.ConfigFactory
 
 import scala.io.StdIn
 
-object AssistantBackendActorApp {
+object AssistantSlaveActorApp {
 
   def main(args: Array[String]): Unit = {
 

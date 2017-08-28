@@ -3,7 +3,7 @@ package com.music.assistant.slaves
 import akka.actor.{Actor, RootActorPath}
 import akka.cluster.ClusterEvent.{CurrentClusterState, MemberUp}
 import akka.cluster.{Cluster, Member, MemberStatus}
-import com.music.assistant.{AssistMeJob, AssistMeResult, BackendRegistration}
+import com.music.assistant.{AssistMeJob, AssistMeResult, SlaveRegistration}
 
 class AssistanceBackendActor extends Actor {
 
@@ -24,5 +24,5 @@ class AssistanceBackendActor extends Actor {
   def register(member: Member): Unit =
     if (member.hasRole("frontend"))
       context.actorSelection(RootActorPath(member.address) / "user" / "frontend") !
-        BackendRegistration
+        SlaveRegistration
 }

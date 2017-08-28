@@ -6,7 +6,7 @@ import com.typesafe.config.ConfigFactory
 
 import scala.io.StdIn
 
-object AssistanceFrontendActorApp {
+object AssistanceMasterActorApp {
 
   def main(args: Array[String]): Unit = {
 
@@ -19,7 +19,7 @@ object AssistanceFrontendActorApp {
       withFallback(ConfigFactory.load())
 
     val actorSystem = ActorSystem("ClusterSystem", config)
-    val frontend: ActorRef = actorSystem.actorOf(Props(classOf[AssistanceFrontendActor]), name = "Frontend")
+    val frontend: ActorRef = actorSystem.actorOf(Props(classOf[AssistanceMasterActor]), name = "Frontend")
 
     import scala.concurrent.duration._
     implicit val executionContext = actorSystem.dispatcher
