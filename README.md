@@ -4,7 +4,26 @@ akka cluster - music assistant app
 AssistanceMasterActor | AssistanceSlaveActor
 ```
 
+```bash
+sbt "runMain com.music.assistant.master.AssistanceMasterActorApp 2551"
+[WARN] [09/01/2017 16:44:45.324] [New I/O boss #3] [NettyTransport(akka://ServerCluster)] Remote connection to [null] failed with java.net.ConnectException: Connection refused: /127.0.0.1:2552
+
+sbt "runMain com.music.assistant.slaves.AssistantSlaveActorApp 2552"
+[INFO] [09/01/2017 16:45:40.907] [ServerCluster-akka.actor.default-dispatcher-18] [akka.cluster.Cluster(akka://ServerCluster)] Cluster Node [akka.tcp://ServerCluster@127.0.0.1:2552] - Welcome from [akka.tcp://ServerCluster@127.0.0.1:2551]
+
+sbt "runMain com.music.assistant.slaves.AssistantSlaveActorApp 0"
+[INFO] [09/01/2017 16:48:09.476] [ServerCluster-akka.actor.default-dispatcher-4] [akka.cluster.Cluster(akka://ServerCluster)] Cluster Node [akka.tcp://ServerCluster@127.0.0.1:62790] - Welcome from [akka.tcp://ServerCluster@127.0.0.1:2552]
+
+sbt "runMain com.music.assistant.slaves.AssistantSlaveActorApp 0"
+[INFO] [09/01/2017 16:49:05.957] [ServerCluster-akka.actor.default-dispatcher-4] [akka.cluster.Cluster(akka://ServerCluster)] Cluster Node [akka.tcp://ServerCluster@127.0.0.1:62818] - Welcome from [akka.tcp://ServerCluster@127.0.0.1:2551]
+
+sbt "runMain com.music.assistant.master.AssistanceMasterActorApp 0"
+[INFO] [09/01/2017 16:49:35.333] [ServerCluster-akka.actor.default-dispatcher-15] [akka.cluster.Cluster(akka://ServerCluster)] Cluster Node [akka.tcp://ServerCluster@127.0.0.1:62828] - Welcome from [akka.tcp://ServerCluster@127.0.0.1:2552]
+```
+
 references
 ----------
+
+http://developer.lightbend.com/guides/akka-sample-cluster-scala/
 
 http://doc.akka.io/docs/akka/current/scala/cluster-usage.html

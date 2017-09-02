@@ -1,22 +1,22 @@
 package com.music.assistant.master
 
 import akka.actor.{Actor, ActorRef, Terminated}
-import com.music.assistant.{AssistMeJob, SlaveRegistration, JobFailed}
+import com.music.assistant.{AssistMeEvent, SlaveRegistration, JobFailed}
 
-class AssistanceMasterActor extends Actor {
+class AssistantMasterActor extends Actor {
 
   var slaveWorkers = IndexedSeq.empty[ActorRef]
   var jobCounter = 0
 
   def receive = {
 
-    case job: AssistMeJob if slaveWorkers.isEmpty =>
-      println("[INFO] received command " + job.text)
-      sender() ! JobFailed("Service unavailable, try again later", job)
+    case event: AssistMeEvent if slaveWorkers.isEmpty =>
+      println("[INFO] received event " + event)
+      sender() ! JobFailed("Service unavailable, try again later", event)
 
-    case job: AssistMeJob =>
+    case queryEvent: AssistMeEvent =>
       jobCounter += 1
-      slaveWorkers(jobCounter % slaveWorkers.size) forward job
+      slaveWorkers(jobCounter % slaveWorkers.size) forward queryEvent
 
     case SlaveRegistration if !slaveWorkers.contains(sender()) =>
       context watch sender()

@@ -3,7 +3,7 @@ package com.music.assistant.slaves
 import akka.actor.{Actor, RootActorPath}
 import akka.cluster.ClusterEvent.{CurrentClusterState, MemberUp}
 import akka.cluster.{Cluster, Member, MemberStatus}
-import com.music.assistant.{AssistMeJob, AssistMeResult, SlaveRegistration}
+import com.music.assistant.{AssistMeEvent, AssistMeResponseNotification, SlaveRegistration}
 
 class AssistanceBackendActor extends Actor {
 
@@ -15,9 +15,12 @@ class AssistanceBackendActor extends Actor {
   override def postStop(): Unit = cluster.unsubscribe(self)
 
   def receive = {
-    case AssistMeJob(text) => sender() ! AssistMeResult(text.toUpperCase)
+
+    case AssistMeEvent(query, userId) => sender() ! AssistMeResponseNotification(query, "Some response", userId)
+
     case state: CurrentClusterState =>
       state.members.filter(_.status == MemberStatus.Up) foreach register
+
     case MemberUp(m) => register(m)
   }
 
