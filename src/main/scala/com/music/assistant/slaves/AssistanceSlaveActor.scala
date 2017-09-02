@@ -5,7 +5,7 @@ import akka.cluster.ClusterEvent.{CurrentClusterState, MemberUp}
 import akka.cluster.{Cluster, Member, MemberStatus}
 import com.music.assistant.{AssistMeEvent, AssistMeResponseNotification, SlaveRegistration}
 
-class AssistanceBackendActor extends Actor {
+class AssistanceSlaveActor extends Actor {
 
   val cluster = Cluster(context.system)
 
@@ -14,18 +14,23 @@ class AssistanceBackendActor extends Actor {
   override def preStart(): Unit = cluster.subscribe(self, classOf[MemberUp])
   override def postStop(): Unit = cluster.unsubscribe(self)
 
-  def receive = {
+  def receive : Actor.Receive = {
 
-    case AssistMeEvent(query, userId) => sender() ! AssistMeResponseNotification(query, "Some response", userId)
+    case AssistMeEvent(query, userId) => {
+      println(s"[INFO] AssistanceSlaveActor received ${query} from ${userId}")
+      sender() ! AssistMeResponseNotification(query, "Some response", userId)
+    }
 
     case state: CurrentClusterState =>
+      println("[INFO] AssistanceSlaveActor CurrentClusterState")
       state.members.filter(_.status == MemberStatus.Up) foreach register
 
     case MemberUp(m) => register(m)
   }
 
-  def register(member: Member): Unit =
+  def register(member: Member): Unit = {
+    println(s"[INFO] AssistanceSlaveActor register ${member}")
     if (member.hasRole("frontend"))
-      context.actorSelection(RootActorPath(member.address) / "user" / "frontend") !
-        SlaveRegistration
+      context.actorSelection(RootActorPath(member.address) / "user" / "frontend") ! SlaveRegistration
+  }
 }

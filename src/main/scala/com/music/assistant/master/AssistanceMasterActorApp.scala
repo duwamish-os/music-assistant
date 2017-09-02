@@ -20,17 +20,20 @@ object AssistanceMasterActorApp {
       withFallback(ConfigFactory.load())
 
     val actorSystem = ActorSystem("ServerCluster", config)
-    val masterActor: ActorRef = actorSystem.actorOf(Props(classOf[AssistantMasterActor]), name = "Frontend")
+    val masterActor: ActorRef = actorSystem.actorOf(Props(classOf[AssistantMasterActor]), name = "frontend")
 
     import scala.concurrent.duration._
     implicit val executionContext = actorSystem.dispatcher
 
-    println("[INFO] keep sending events to master actor")
+    val identifier = System.currentTimeMillis()
+
+    println(s"[INFO] keep sending events to master actor ${identifier}")
+
+    var userId = 0
 
     actorSystem.scheduler.schedule(5.seconds, 10.seconds) {
-
-      masterActor ! AssistMeEvent("Hi Siri, where is my \"To The Bone album\"?", "someuser-" + Random.nextInt(100))
-
+      masterActor ! AssistMeEvent("Hi Siri, where is my \"To The Bone\" album?", identifier + "-someuser-" + userId)
+      userId  = userId + 1
     }
 
     System.in.read()

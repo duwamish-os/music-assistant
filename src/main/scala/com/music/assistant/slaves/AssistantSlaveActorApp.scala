@@ -9,7 +9,7 @@ object AssistantSlaveActorApp {
 
   def main(args: Array[String]): Unit = {
 
-    println("sample port 2551")
+    println("sample port 2552")
     val port = if (args.isEmpty) "0" else args(0)
 
     val config = ConfigFactory.parseString(s"akka.remote.netty.tcp.port=$port")
@@ -17,7 +17,7 @@ object AssistantSlaveActorApp {
       .withFallback(ConfigFactory.load())
 
     val actorSystem = ActorSystem("ServerCluster", config)
-    actorSystem.actorOf(Props(classOf[AssistanceBackendActor]), name = "Backend")
+    actorSystem.actorOf(Props(classOf[AssistanceSlaveActor]), name = "backend")
 
     System.in.read()
 

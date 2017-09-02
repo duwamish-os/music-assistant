@@ -11,7 +11,7 @@ class AssistantMasterActor extends Actor {
   def receive = {
 
     case event: AssistMeEvent if slaveWorkers.isEmpty =>
-      println("[INFO] received event " + event)
+      println("[INFO] AssistantMasterActor received event " + event + ", but no slaves have joined")
       sender() ! JobFailed("Service unavailable, try again later", event)
 
     case queryEvent: AssistMeEvent =>
