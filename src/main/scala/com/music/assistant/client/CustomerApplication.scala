@@ -15,6 +15,7 @@ object CustomerApplication {
     import akka.util.Timeout
     implicit val duration: Timeout = 20 seconds
 
+    //TODO invoke "/user/master" without having to specify port
     val actorSystem = ActorSystem()
     val masterActor = actorSystem.actorSelection("akka.tcp://ServerCluster@127.0.0.1:2551/user/master").resolveOne()
 
