@@ -1,4 +1,4 @@
-package com.music.assistant
+package com.music.assistant.server
 
 import akka.cluster.Cluster
 import akka.cluster.ClusterEvent._

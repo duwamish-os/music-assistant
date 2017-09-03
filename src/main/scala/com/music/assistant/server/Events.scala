@@ -1,4 +1,4 @@
-package com.music.assistant
+package com.music.assistant.server
 
 final case class AssistMeEvent(query: String, userId: String)
 final case class AssistMeResponseNotification(query: String, response: String, userId: String)

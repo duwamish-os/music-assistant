@@ -1,11 +1,11 @@
-package com.music.assistant.slaves
+package com.music.assistant.server.slaves
 
 import akka.actor.{Actor, RootActorPath}
 import akka.cluster.ClusterEvent.{CurrentClusterState, MemberUp}
 import akka.cluster.{Cluster, Member, MemberStatus}
-import com.music.assistant.{AssistMeEvent, AssistMeResponseNotification, SlaveRegistration}
+import com.music.assistant.server.{AssistMeEvent, AssistMeResponseNotification, SlaveRegistration}
 
-class AssistanceSlaveActor extends Actor {
+class AssistanceSlaveNode extends Actor {
 
   val cluster = Cluster(context.system)
 
@@ -31,6 +31,6 @@ class AssistanceSlaveActor extends Actor {
   def register(member: Member): Unit = {
     println(s"[INFO] AssistanceSlaveActor register ${member}")
     if (member.hasRole("frontend"))
-      context.actorSelection(RootActorPath(member.address) / "user" / "frontend") ! SlaveRegistration
+      context.actorSelection(RootActorPath(member.address) / "user" / "master") ! SlaveRegistration
   }
 }
